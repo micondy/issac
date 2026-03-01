@@ -62,7 +62,7 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/SpawnRegionLeft",
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0.375, 0.33, 0.305]),
         spawn=sim_utils.CuboidCfg(
-            size=(0.11, 0.18, 0.06),
+            size=(0.30, 0.30, 0.06),
             collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.1, 0.8, 0.1), opacity=0.20),
         ),
@@ -72,7 +72,7 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/SpawnRegionRight",
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0.375, -0.33, 0.305]),
         spawn=sim_utils.CuboidCfg(
-            size=(0.11, 0.18, 0.06),
+            size=(0.30, 0.30, 0.06),
             collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.1, 0.6, 0.9), opacity=0.20),
         ),
@@ -206,7 +206,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.08, 0.03), "y": (0.06, 0.24), "z": (0.22, 0.28)},
+            "pose_range": {"x": (-0.15, 0.15), "y": (0.03, 0.33), "z": (0.22, 0.28)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_left", body_names="ObjectLeft"),
         },
@@ -216,7 +216,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.08, 0.03), "y": (-0.24, -0.06), "z": (0.22, 0.28)},
+            "pose_range": {"x": (-0.15, 0.15), "y": (-0.33, -0.03), "z": (0.22, 0.28)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_right", body_names="ObjectRight"),
         },
