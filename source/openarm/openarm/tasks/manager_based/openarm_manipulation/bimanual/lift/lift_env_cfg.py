@@ -51,10 +51,10 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
 
     mini_table = AssetBaseCfg(
         prim_path="{ENV_REGEX_NS}/MiniTable",
-        init_state=AssetBaseCfg.InitialStateCfg(pos=[0.40, 0.0, 0.18], rot=[0.707, 0, 0, 0.707]),
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[0.42, 0.0, 0.28], rot=[0.707, 0, 0, 0.707]),
         spawn=UsdFileCfg(
             usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Mounts/SeattleLabTable/table_instanceable.usd",
-            scale=(0.38, 0.38, 0.33),
+            scale=(0.70, 0.85, 0.60),
         ),
     )
 
@@ -186,7 +186,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.03, 0.03), "y": (0.13, 0.19), "z": (0.10, 0.14)},
+            "pose_range": {"x": (-0.05, 0.05), "y": (0.11, 0.23), "z": (0.22, 0.28)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_left", body_names="ObjectLeft"),
         },
@@ -196,7 +196,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.03, 0.03), "y": (-0.19, -0.13), "z": (0.10, 0.14)},
+            "pose_range": {"x": (-0.05, 0.05), "y": (-0.23, -0.11), "z": (0.22, 0.28)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_right", body_names="ObjectRight"),
         },
