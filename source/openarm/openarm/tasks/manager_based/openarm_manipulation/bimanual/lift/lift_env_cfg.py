@@ -265,7 +265,7 @@ class RewardsCfg:
     left_object_goal_tracking_fine_grained = RewTerm(
         func=mdp.object_goal_distance,
         params={
-            "std": 0.08,
+            "std": 0.10,
             "minimal_height": 0.04,
             "command_name": "left_object_pose",
             "object_cfg": SceneEntityCfg("object_left"),
@@ -276,7 +276,7 @@ class RewardsCfg:
     right_object_goal_tracking_fine_grained = RewTerm(
         func=mdp.object_goal_distance,
         params={
-            "std": 0.08,
+            "std": 0.10,
             "minimal_height": 0.04,
             "command_name": "right_object_pose",
             "object_cfg": SceneEntityCfg("object_right"),
@@ -287,20 +287,20 @@ class RewardsCfg:
     both_object_goal_tracking = RewTerm(
         func=mdp.both_objects_goal_distance,
         params={
-            "std": 0.2,
+            "std": 0.25,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=30.0,
+        weight=40.0,
     )
 
     success_bonus = RewTerm(
         func=mdp.both_objects_goal_reached_bonus,
         params={
-            "threshold": 0.12,
+            "threshold": 0.18,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
@@ -348,7 +348,7 @@ class TerminationsCfg:
     success = DoneTerm(
         func=mdp.both_objects_goal_reached,
         params={
-            "threshold": 0.12,
+            "threshold": 0.18,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
