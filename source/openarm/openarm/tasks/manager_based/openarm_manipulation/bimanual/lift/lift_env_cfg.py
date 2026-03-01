@@ -300,7 +300,7 @@ class RewardsCfg:
     success_bonus = RewTerm(
         func=mdp.both_objects_goal_reached_bonus,
         params={
-            "threshold": 0.18,
+            "threshold": 0.20,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
@@ -348,7 +348,7 @@ class TerminationsCfg:
     success = DoneTerm(
         func=mdp.both_objects_goal_reached,
         params={
-            "threshold": 0.18,
+            "threshold": 0.20,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
@@ -364,12 +364,12 @@ class CurriculumCfg:
 
     action_rate = CurrTerm(
         func=mdp.modify_reward_weight,
-        params={"term_name": "action_rate", "weight": -1e-2, "num_steps": 10000},
+        params={"term_name": "action_rate", "weight": -1e-3, "num_steps": 10000},
     )
 
     joint_vel = CurrTerm(
         func=mdp.modify_reward_weight,
-        params={"term_name": "joint_vel", "weight": -1e-2, "num_steps": 10000},
+        params={"term_name": "joint_vel", "weight": -1e-3, "num_steps": 10000},
     )
 
 
