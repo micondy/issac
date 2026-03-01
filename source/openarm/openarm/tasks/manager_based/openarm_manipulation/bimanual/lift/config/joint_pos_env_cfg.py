@@ -18,7 +18,7 @@ from isaaclab.sim.spawners.from_files.from_files_cfg import UsdFileCfg
 from isaaclab.utils import configclass
 from isaaclab.utils.assets import ISAAC_NUCLEUS_DIR
 
-from source.openarm.openarm.tasks.manager_based.openarm_manipulation.assets.openarm_bimanual import (
+from openarm.tasks.manager_based.openarm_manipulation.assets.openarm_bimanual import (
     OPEN_ARM_CFG,
 )
 
