@@ -221,13 +221,13 @@ class RewardsCfg:
     left_lifting_object = RewTerm(
         func=mdp.object_is_lifted,
         params={"minimal_height": 0.04, "object_cfg": SceneEntityCfg("object_left")},
-        weight=15.0,
+        weight=5.0,
     )
 
     right_lifting_object = RewTerm(
         func=mdp.object_is_lifted,
         params={"minimal_height": 0.04, "object_cfg": SceneEntityCfg("object_right")},
-        weight=15.0,
+        weight=5.0,
     )
 
     both_lifting_object = RewTerm(
@@ -237,7 +237,7 @@ class RewardsCfg:
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=8.0,
+        weight=3.0,
     )
 
     left_object_goal_tracking = RewTerm(
@@ -248,7 +248,7 @@ class RewardsCfg:
             "command_name": "left_object_pose",
             "object_cfg": SceneEntityCfg("object_left"),
         },
-        weight=16.0,
+        weight=40.0,
     )
 
     right_object_goal_tracking = RewTerm(
@@ -259,7 +259,7 @@ class RewardsCfg:
             "command_name": "right_object_pose",
             "object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=16.0,
+        weight=40.0,
     )
 
     left_object_goal_tracking_fine_grained = RewTerm(
@@ -270,7 +270,7 @@ class RewardsCfg:
             "command_name": "left_object_pose",
             "object_cfg": SceneEntityCfg("object_left"),
         },
-        weight=5.0,
+        weight=15.0,
     )
 
     right_object_goal_tracking_fine_grained = RewTerm(
@@ -281,7 +281,7 @@ class RewardsCfg:
             "command_name": "right_object_pose",
             "object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=5.0,
+        weight=15.0,
     )
 
     both_object_goal_tracking = RewTerm(
@@ -294,7 +294,20 @@ class RewardsCfg:
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=12.0,
+        weight=30.0,
+    )
+
+    success_bonus = RewTerm(
+        func=mdp.both_objects_goal_reached_bonus,
+        params={
+            "threshold": 0.05,
+            "minimal_height": 0.04,
+            "left_command_name": "left_object_pose",
+            "right_command_name": "right_object_pose",
+            "left_object_cfg": SceneEntityCfg("object_left"),
+            "right_object_cfg": SceneEntityCfg("object_right"),
+        },
+        weight=50.0,
     )
 
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)
@@ -332,6 +345,18 @@ class TerminationsCfg:
         params={"minimum_height": -0.05, "asset_cfg": SceneEntityCfg("object_right")},
     )
 
+    success = DoneTerm(
+        func=mdp.both_objects_goal_reached,
+        params={
+            "threshold": 0.05,
+            "minimal_height": 0.04,
+            "left_command_name": "left_object_pose",
+            "right_command_name": "right_object_pose",
+            "left_object_cfg": SceneEntityCfg("object_left"),
+            "right_object_cfg": SceneEntityCfg("object_right"),
+        },
+    )
+
 
 @configclass
 class CurriculumCfg:
@@ -363,7 +388,7 @@ class LiftBiEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         self.decimation = 2
-        self.episode_length_s = 5.0
+        self.episode_length_s = 8.0
 
         self.sim.dt = 0.01
         self.sim.render_interval = self.decimation
