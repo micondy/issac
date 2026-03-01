@@ -205,7 +205,7 @@ class RewardsCfg:
             "object_cfg": SceneEntityCfg("object_left"),
             "hand_cfg": SceneEntityCfg("robot", body_names=["openarm_left_hand"]),
         },
-        weight=1.1,
+        weight=1.4,
     )
 
     right_reaching_object = RewTerm(
@@ -215,7 +215,7 @@ class RewardsCfg:
             "object_cfg": SceneEntityCfg("object_right"),
             "hand_cfg": SceneEntityCfg("robot", body_names=["openarm_right_hand"]),
         },
-        weight=1.1,
+        weight=1.8,
     )
 
     left_lifting_object = RewTerm(

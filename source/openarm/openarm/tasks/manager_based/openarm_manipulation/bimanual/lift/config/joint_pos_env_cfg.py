@@ -44,7 +44,7 @@ class OpenArmBiCubeLiftEnvCfg(LiftBiEnvCfg):
                 "openarm_left_joint6",
                 "openarm_left_joint7",
             ],
-            scale=0.5,
+            scale=0.4,
             use_default_offset=True,
         )
 
@@ -59,7 +59,7 @@ class OpenArmBiCubeLiftEnvCfg(LiftBiEnvCfg):
                 "openarm_right_joint6",
                 "openarm_right_joint7",
             ],
-            scale=0.5,
+            scale=0.4,
             use_default_offset=True,
         )
 
