@@ -72,3 +72,47 @@ def object_goal_distance(
     )
     distance = torch.norm(des_pos_w - object_asset.data.root_pos_w, dim=1)
     return (object_asset.data.root_pos_w[:, 2] > minimal_height) * (1 - torch.tanh(distance / std))
+
+
+def both_objects_lifted(
+    env: ManagerBasedRLEnv,
+    minimal_height: float,
+    left_object_cfg: SceneEntityCfg = SceneEntityCfg("object_left"),
+    right_object_cfg: SceneEntityCfg = SceneEntityCfg("object_right"),
+) -> torch.Tensor:
+    """Reward when both objects are simultaneously lifted above the threshold."""
+    left_object: RigidObject = env.scene[left_object_cfg.name]
+    right_object: RigidObject = env.scene[right_object_cfg.name]
+    left_lifted = left_object.data.root_pos_w[:, 2] > minimal_height
+    right_lifted = right_object.data.root_pos_w[:, 2] > minimal_height
+    return (left_lifted & right_lifted).float()
+
+
+def both_objects_goal_distance(
+    env: ManagerBasedRLEnv,
+    std: float,
+    minimal_height: float,
+    left_command_name: str,
+    right_command_name: str,
+    robot_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    left_object_cfg: SceneEntityCfg = SceneEntityCfg("object_left"),
+    right_object_cfg: SceneEntityCfg = SceneEntityCfg("object_right"),
+) -> torch.Tensor:
+    """Reward simultaneous goal tracking by both objects (coupled cooperative term)."""
+    left_tracking = object_goal_distance(
+        env,
+        std=std,
+        minimal_height=minimal_height,
+        command_name=left_command_name,
+        robot_cfg=robot_cfg,
+        object_cfg=left_object_cfg,
+    )
+    right_tracking = object_goal_distance(
+        env,
+        std=std,
+        minimal_height=minimal_height,
+        command_name=right_command_name,
+        robot_cfg=robot_cfg,
+        object_cfg=right_object_cfg,
+    )
+    return torch.sqrt(torch.clamp(left_tracking * right_tracking, min=0.0))

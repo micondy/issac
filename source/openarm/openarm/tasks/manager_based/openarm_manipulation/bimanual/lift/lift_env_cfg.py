@@ -205,7 +205,7 @@ class RewardsCfg:
             "object_cfg": SceneEntityCfg("object_left"),
             "hand_cfg": SceneEntityCfg("robot", body_names=["openarm_left_hand"]),
         },
-        weight=1.4,
+        weight=1.6,
     )
 
     right_reaching_object = RewTerm(
@@ -215,7 +215,7 @@ class RewardsCfg:
             "object_cfg": SceneEntityCfg("object_right"),
             "hand_cfg": SceneEntityCfg("robot", body_names=["openarm_right_hand"]),
         },
-        weight=1.8,
+        weight=1.6,
     )
 
     left_lifting_object = RewTerm(
@@ -228,6 +228,16 @@ class RewardsCfg:
         func=mdp.object_is_lifted,
         params={"minimal_height": 0.04, "object_cfg": SceneEntityCfg("object_right")},
         weight=15.0,
+    )
+
+    both_lifting_object = RewTerm(
+        func=mdp.both_objects_lifted,
+        params={
+            "minimal_height": 0.04,
+            "left_object_cfg": SceneEntityCfg("object_left"),
+            "right_object_cfg": SceneEntityCfg("object_right"),
+        },
+        weight=8.0,
     )
 
     left_object_goal_tracking = RewTerm(
@@ -272,6 +282,19 @@ class RewardsCfg:
             "object_cfg": SceneEntityCfg("object_right"),
         },
         weight=5.0,
+    )
+
+    both_object_goal_tracking = RewTerm(
+        func=mdp.both_objects_goal_distance,
+        params={
+            "std": 0.2,
+            "minimal_height": 0.04,
+            "left_command_name": "left_object_pose",
+            "right_command_name": "right_object_pose",
+            "left_object_cfg": SceneEntityCfg("object_left"),
+            "right_object_cfg": SceneEntityCfg("object_right"),
+        },
+        weight=12.0,
     )
 
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)
