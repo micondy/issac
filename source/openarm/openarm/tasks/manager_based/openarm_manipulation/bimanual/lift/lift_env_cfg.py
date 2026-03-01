@@ -49,6 +49,15 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         ),
     )
 
+    mini_table = AssetBaseCfg(
+        prim_path="{ENV_REGEX_NS}/MiniTable",
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[0.40, 0.0, 0.18], rot=[0.707, 0, 0, 0.707]),
+        spawn=UsdFileCfg(
+            usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Mounts/SeattleLabTable/table_instanceable.usd",
+            scale=(0.38, 0.38, 0.33),
+        ),
+    )
+
     plane = AssetBaseCfg(
         prim_path="/World/GroundPlane",
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0, 0, -1.05]),
@@ -71,9 +80,9 @@ class CommandsCfg:
         resampling_time_range=(5.0, 5.0),
         debug_vis=True,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.2, 0.4),
-            pos_y=(0.05, 0.25),
-            pos_z=(0.15, 0.4),
+            pos_x=(0.22, 0.32),
+            pos_y=(0.10, 0.18),
+            pos_z=(0.12, 0.22),
             roll=(0.0, 0.0),
             pitch=(math.pi / 2, math.pi / 2),
             yaw=(0.0, 0.0),
@@ -86,9 +95,9 @@ class CommandsCfg:
         resampling_time_range=(5.0, 5.0),
         debug_vis=True,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.2, 0.4),
-            pos_y=(-0.25, -0.05),
-            pos_z=(0.15, 0.4),
+            pos_x=(0.22, 0.32),
+            pos_y=(-0.18, -0.10),
+            pos_z=(0.12, 0.22),
             roll=(0.0, 0.0),
             pitch=(math.pi / 2, math.pi / 2),
             yaw=(0.0, 0.0),
@@ -177,7 +186,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.08, 0.08), "y": (0.08, 0.24), "z": (0.0, 0.0)},
+            "pose_range": {"x": (-0.03, 0.03), "y": (0.13, 0.19), "z": (0.10, 0.14)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_left", body_names="ObjectLeft"),
         },
@@ -187,7 +196,7 @@ class EventCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.08, 0.08), "y": (-0.24, -0.08), "z": (0.0, 0.0)},
+            "pose_range": {"x": (-0.03, 0.03), "y": (-0.19, -0.13), "z": (0.10, 0.14)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_right", body_names="ObjectRight"),
         },
@@ -300,7 +309,7 @@ class RewardsCfg:
     success_bonus = RewTerm(
         func=mdp.both_objects_goal_reached_bonus,
         params={
-            "threshold": 0.20,
+            "threshold": 0.22,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
@@ -348,7 +357,7 @@ class TerminationsCfg:
     success = DoneTerm(
         func=mdp.both_objects_goal_reached,
         params={
-            "threshold": 0.20,
+            "threshold": 0.22,
             "minimal_height": 0.04,
             "left_command_name": "left_object_pose",
             "right_command_name": "right_object_pose",
@@ -364,12 +373,12 @@ class CurriculumCfg:
 
     action_rate = CurrTerm(
         func=mdp.modify_reward_weight,
-        params={"term_name": "action_rate", "weight": -1e-3, "num_steps": 10000},
+        params={"term_name": "action_rate", "weight": -2e-4, "num_steps": 10000},
     )
 
     joint_vel = CurrTerm(
         func=mdp.modify_reward_weight,
-        params={"term_name": "joint_vel", "weight": -1e-3, "num_steps": 10000},
+        params={"term_name": "joint_vel", "weight": -2e-4, "num_steps": 10000},
     )
 
 
