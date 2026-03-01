@@ -58,6 +58,26 @@ class ObjectTableSceneCfg(InteractiveSceneCfg):
         ),
     )
 
+    spawn_region_left = AssetBaseCfg(
+        prim_path="{ENV_REGEX_NS}/SpawnRegionLeft",
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[0.41, 0.33, 0.305]),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.08, 0.14, 0.06),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.1, 0.8, 0.1), opacity=0.20),
+        ),
+    )
+
+    spawn_region_right = AssetBaseCfg(
+        prim_path="{ENV_REGEX_NS}/SpawnRegionRight",
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[0.41, -0.33, 0.305]),
+        spawn=sim_utils.CuboidCfg(
+            size=(0.08, 0.14, 0.06),
+            collision_props=sim_utils.CollisionPropertiesCfg(collision_enabled=False),
+            visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.1, 0.6, 0.9), opacity=0.20),
+        ),
+    )
+
     plane = AssetBaseCfg(
         prim_path="/World/GroundPlane",
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0, 0, -1.05]),
