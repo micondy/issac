@@ -495,9 +495,9 @@ class CommandsRightOnlyCfg:
         resampling_time_range=(5.0, 5.0),
         debug_vis=True,
         ranges=mdp.UniformPoseCommandCfg.Ranges(
-            pos_x=(0.22, 0.32),
-            pos_y=(-0.18, -0.10),
-            pos_z=(0.12, 0.22),
+            pos_x=(0.20, 0.28),
+            pos_y=(-0.20, -0.12),
+            pos_z=(0.10, 0.16),
             roll=(0.0, 0.0),
             pitch=(math.pi / 2, math.pi / 2),
             yaw=(0.0, 0.0),
@@ -572,7 +572,7 @@ class EventRightOnlyCfg:
         func=mdp.reset_root_state_uniform,
         mode="reset",
         params={
-            "pose_range": {"x": (-0.475, 0.025), "y": (-0.43, 0.07), "z": (0.22, 0.28)},
+            "pose_range": {"x": (-0.28, -0.08), "y": (-0.30, -0.12), "z": (0.22, 0.28)},
             "velocity_range": {},
             "asset_cfg": SceneEntityCfg("object_right", body_names="ObjectRight"),
         },
