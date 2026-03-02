@@ -23,7 +23,7 @@ from openarm.tasks.manager_based.openarm_manipulation.assets.openarm_bimanual im
 )
 
 from .. import mdp
-from ..lift_env_cfg import LiftBiEnvCfg
+from ..lift_env_cfg import LiftBiEnvCfg, LiftBiRightOnlyEnvCfg
 
 
 @configclass
@@ -125,28 +125,52 @@ class OpenArmBiCubeLiftEnvCfg_PLAY(OpenArmBiCubeLiftEnvCfg):
 
 
 @configclass
-class OpenArmBiCubeLiftRightOnlyEnvCfg(OpenArmBiCubeLiftEnvCfg):
+class OpenArmBiCubeLiftRightOnlyEnvCfg(LiftBiRightOnlyEnvCfg):
     def __post_init__(self):
         super().__post_init__()
 
-        self.actions.left_arm_action.scale = 0.0
-        self.actions.left_gripper_action.open_command_expr = {"openarm_left_finger_joint.*": 0.0}
-        self.actions.left_gripper_action.close_command_expr = {"openarm_left_finger_joint.*": 0.0}
+        self.scene.robot = OPEN_ARM_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
 
-        self.rewards.left_reaching_object.weight = 0.0
-        self.rewards.left_lifting_object.weight = 0.0
-        self.rewards.left_object_goal_tracking.weight = 0.0
-        self.rewards.left_object_goal_tracking_fine_grained.weight = 0.0
-        self.rewards.left_success_bonus.weight = 0.0
+        self.actions.arm_action = mdp.JointPositionActionCfg(
+            asset_name="robot",
+            joint_names=[
+                "openarm_right_joint1",
+                "openarm_right_joint2",
+                "openarm_right_joint3",
+                "openarm_right_joint4",
+                "openarm_right_joint5",
+                "openarm_right_joint6",
+                "openarm_right_joint7",
+            ],
+            scale=0.4,
+            use_default_offset=True,
+        )
 
-        self.rewards.right_reaching_object.weight = 2.0
-        self.rewards.right_lifting_object.weight = 12.0
-        self.rewards.right_object_goal_tracking.weight = 24.0
-        self.rewards.right_object_goal_tracking_fine_grained.params["std"] = 0.05
-        self.rewards.right_object_goal_tracking_fine_grained.weight = 5.0
-        self.rewards.right_success_bonus.weight = 35.0
+        self.actions.gripper_action = mdp.BinaryJointPositionActionCfg(
+            asset_name="robot",
+            joint_names=["openarm_right_finger_joint.*"],
+            open_command_expr={"openarm_right_finger_joint.*": 0.044},
+            close_command_expr={"openarm_right_finger_joint.*": 0.0},
+        )
 
-        self.terminations.left_object_dropping.params["minimum_height"] = -10.0
+        self.commands.object_pose.body_name = "openarm_right_hand"
+
+        self.scene.object_right = RigidObjectCfg(
+            prim_path="{ENV_REGEX_NS}/ObjectRight",
+            init_state=RigidObjectCfg.InitialStateCfg(pos=[0.4, -0.18, 0.055], rot=[1, 0, 0, 0]),
+            spawn=UsdFileCfg(
+                usd_path=f"{ISAAC_NUCLEUS_DIR}/Props/Blocks/DexCube/dex_cube_instanceable.usd",
+                scale=(0.8, 0.8, 0.8),
+                rigid_props=RigidBodyPropertiesCfg(
+                    solver_position_iteration_count=16,
+                    solver_velocity_iteration_count=1,
+                    max_angular_velocity=1000.0,
+                    max_linear_velocity=1000.0,
+                    max_depenetration_velocity=5.0,
+                    disable_gravity=False,
+                ),
+            ),
+        )
 
 
 @configclass
