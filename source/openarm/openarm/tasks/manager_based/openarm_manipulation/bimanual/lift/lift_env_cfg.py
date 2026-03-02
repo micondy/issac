@@ -266,7 +266,7 @@ class RewardsCfg:
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=3.0,
+        weight=0.0,
     )
 
     left_object_goal_tracking = RewTerm(
@@ -323,7 +323,7 @@ class RewardsCfg:
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=40.0,
+        weight=0.0,
     )
 
     success_bonus = RewTerm(
@@ -336,7 +336,29 @@ class RewardsCfg:
             "left_object_cfg": SceneEntityCfg("object_left"),
             "right_object_cfg": SceneEntityCfg("object_right"),
         },
-        weight=50.0,
+        weight=0.0,
+    )
+
+    left_success_bonus = RewTerm(
+        func=mdp.object_goal_reached_bonus,
+        params={
+            "threshold": 0.22,
+            "minimal_height": 0.04,
+            "command_name": "left_object_pose",
+            "object_cfg": SceneEntityCfg("object_left"),
+        },
+        weight=25.0,
+    )
+
+    right_success_bonus = RewTerm(
+        func=mdp.object_goal_reached_bonus,
+        params={
+            "threshold": 0.22,
+            "minimal_height": 0.04,
+            "command_name": "right_object_pose",
+            "object_cfg": SceneEntityCfg("object_right"),
+        },
+        weight=25.0,
     )
 
     action_rate = RewTerm(func=mdp.action_rate_l2, weight=-1e-4)
@@ -373,19 +395,6 @@ class TerminationsCfg:
         func=mdp.root_height_below_minimum,
         params={"minimum_height": -0.05, "asset_cfg": SceneEntityCfg("object_right")},
     )
-
-    success = DoneTerm(
-        func=mdp.both_objects_goal_reached,
-        params={
-            "threshold": 0.22,
-            "minimal_height": 0.04,
-            "left_command_name": "left_object_pose",
-            "right_command_name": "right_object_pose",
-            "left_object_cfg": SceneEntityCfg("object_left"),
-            "right_object_cfg": SceneEntityCfg("object_right"),
-        },
-    )
-
 
 @configclass
 class CurriculumCfg:

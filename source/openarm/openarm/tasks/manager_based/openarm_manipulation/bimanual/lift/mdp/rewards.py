@@ -154,3 +154,27 @@ def both_objects_goal_reached_bonus(
     right_reached = (right_distance < threshold) & (right_object.data.root_pos_w[:, 2] > minimal_height)
 
     return (left_reached & right_reached).float()
+
+
+def object_goal_reached_bonus(
+    env: ManagerBasedRLEnv,
+    threshold: float,
+    minimal_height: float,
+    command_name: str,
+    robot_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    object_cfg: SceneEntityCfg = SceneEntityCfg("object_left"),
+) -> torch.Tensor:
+    """Sparse bonus when one object is close to its goal and lifted."""
+    robot: RigidObject = env.scene[robot_cfg.name]
+    object_asset: RigidObject = env.scene[object_cfg.name]
+    command = env.command_manager.get_command(command_name)
+
+    des_pos_w, _ = combine_frame_transforms(
+        robot.data.root_pos_w,
+        robot.data.root_quat_w,
+        command[:, :3],
+    )
+
+    distance = torch.norm(des_pos_w - object_asset.data.root_pos_w, dim=1)
+    reached = (distance < threshold) & (object_asset.data.root_pos_w[:, 2] > minimal_height)
+    return reached.float()
