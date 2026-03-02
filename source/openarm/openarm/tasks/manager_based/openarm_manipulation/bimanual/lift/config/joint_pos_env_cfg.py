@@ -122,3 +122,37 @@ class OpenArmBiCubeLiftEnvCfg_PLAY(OpenArmBiCubeLiftEnvCfg):
         self.scene.num_envs = 50
         self.scene.env_spacing = 2.5
         self.observations.policy.enable_corruption = False
+
+
+@configclass
+class OpenArmBiCubeLiftRightOnlyEnvCfg(OpenArmBiCubeLiftEnvCfg):
+    def __post_init__(self):
+        super().__post_init__()
+
+        self.actions.left_arm_action.scale = 0.0
+        self.actions.left_gripper_action.open_command_expr = {"openarm_left_finger_joint.*": 0.0}
+        self.actions.left_gripper_action.close_command_expr = {"openarm_left_finger_joint.*": 0.0}
+
+        self.rewards.left_reaching_object.weight = 0.0
+        self.rewards.left_lifting_object.weight = 0.0
+        self.rewards.left_object_goal_tracking.weight = 0.0
+        self.rewards.left_object_goal_tracking_fine_grained.weight = 0.0
+        self.rewards.left_success_bonus.weight = 0.0
+
+        self.rewards.right_reaching_object.weight = 2.0
+        self.rewards.right_lifting_object.weight = 12.0
+        self.rewards.right_object_goal_tracking.weight = 24.0
+        self.rewards.right_object_goal_tracking_fine_grained.params["std"] = 0.05
+        self.rewards.right_object_goal_tracking_fine_grained.weight = 5.0
+        self.rewards.right_success_bonus.weight = 35.0
+
+        self.terminations.left_object_dropping.params["minimum_height"] = -10.0
+
+
+@configclass
+class OpenArmBiCubeLiftRightOnlyEnvCfg_PLAY(OpenArmBiCubeLiftRightOnlyEnvCfg):
+    def __post_init__(self):
+        super().__post_init__()
+        self.scene.num_envs = 50
+        self.scene.env_spacing = 2.5
+        self.observations.policy.enable_corruption = False
